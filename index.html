@@ -116,6 +116,89 @@
             70% { box-shadow: 0 0 0 8px rgba(0, 136, 55, 0); }
             100% { box-shadow: 0 0 0 0 rgba(0, 136, 55, 0); }
         }
+
+        /* Custom 3D Icon Micro-Animations */
+        @keyframes clock-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-clock-hand {
+            transform-origin: 40px 40px;
+            animation: clock-spin 12s linear infinite;
+        }
+
+        @keyframes radar-pulse {
+            0% { transform: scale(0.85); opacity: 0.85; }
+            70% { transform: scale(1.25); opacity: 0; }
+            100% { transform: scale(1.25); opacity: 0; }
+        }
+        .animate-radar-ring {
+            transform-origin: 32px 38px;
+            animation: radar-pulse 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+        }
+
+        @keyframes pen-write {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            35% { transform: translate(3px, -2px) rotate(6deg); }
+            70% { transform: translate(-2px, 2px) rotate(-4deg); }
+        }
+        .animate-pen {
+            transform-origin: 44px 36px;
+            animation: pen-write 2.8s ease-in-out infinite;
+        }
+
+        @keyframes shadow-breathe {
+            0%, 100% { transform: scaleX(1); opacity: 0.35; }
+            50% { transform: scaleX(0.78); opacity: 0.18; }
+        }
+        .animate-shadow-float {
+            transform-origin: center;
+            animation: shadow-breathe 4s ease-in-out infinite;
+        }
+
+        /* List View Mode Adaptation */
+        #appContainer.view-list {
+            grid-template-columns: minmax(0, 1fr);
+        }
+        @media (min-width: 768px) {
+            #appContainer.view-list .app-card {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1.5rem;
+                padding: 1.25rem 1.75rem;
+            }
+            #appContainer.view-list .card-body-wrap {
+                display: flex;
+                align-items: center;
+                gap: 1.25rem;
+                flex: 1;
+            }
+            #appContainer.view-list .card-top-row {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+            #appContainer.view-list .card-top-row .status-badge-pill {
+                display: none;
+            }
+            #appContainer.view-list .card-text-wrap {
+                flex: 1;
+            }
+            #appContainer.view-list .card-text-wrap p {
+                margin-bottom: 0;
+            }
+            #appContainer.view-list .card-footer-wrap {
+                border-top: none;
+                padding-top: 0;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.5rem;
+                flex-shrink: 0;
+            }
+            #appContainer.view-list .list-status-pill {
+                display: inline-flex;
+            }
+        }
     </style>
 </head>
 <body class="font-sans text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-yonas-green selection:text-white bg-slate-50 relative overflow-x-hidden">
@@ -148,7 +231,20 @@
             </div>
 
             <!-- Digital Clock & Info Modal Trigger -->
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2.5 sm:space-x-3">
+                <!-- Compact Status Indicator (3 Aktif, 3 Segera Hadir) -->
+                <div class="hidden xl:flex items-center gap-2 bg-white/90 px-3.5 py-2 rounded-2xl border border-emerald-200/80 shadow-sm text-xs font-bold">
+                    <span class="inline-flex items-center gap-1.5 text-yonas-green">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 badge-live"></span>
+                        3 Aplikasi Aktif
+                    </span>
+                    <span class="text-slate-300">|</span>
+                    <span class="inline-flex items-center gap-1.5 text-amber-700">
+                        <i class="fa-solid fa-clock text-[11px] text-amber-500"></i>
+                        3 Segera Hadir
+                    </span>
+                </div>
+
                 <div class="text-right hidden sm:block bg-emerald-50/80 px-3.5 py-1.5 rounded-2xl border border-emerald-100">
                     <div id="live-time" class="text-sm font-display font-bold text-yonas-green tracking-wider">00:00:00 WIB</div>
                     <div id="live-date" class="text-[11px] font-medium text-slate-500">Senin, 1 Jan 2026</div>
@@ -188,43 +284,55 @@
                     <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
                         <div class="text-[11px] text-emerald-200 font-semibold uppercase">Status Rilis</div>
                         <div class="text-xl font-display font-bold mt-0.5 text-emerald-300 flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 badge-live"></span> 2 Aktif
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 badge-live"></span> 3 Aktif
                         </div>
                     </div>
                     <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-                        <div class="text-[11px] text-amber-200 font-semibold uppercase">Pengembangan</div>
-                        <div class="text-xl font-display font-bold mt-0.5 text-amber-300">4 Modul</div>
+                        <div class="text-[11px] text-amber-200 font-semibold uppercase">Segera Hadir</div>
+                        <div class="text-xl font-display font-bold mt-0.5 text-amber-300">3 Modul</div>
                     </div>
                     <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-                        <div class="text-[11px] text-emerald-200 font-semibold uppercase">Koneksi Portal</div>
+                        <div class="text-[11px] text-emerald-200 font-semibold uppercase">Status Sistem</div>
                         <div class="text-xl font-display font-bold mt-0.5 text-white">Online</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SEARCH BAR & CATEGORY FILTER -->
+        <!-- SEARCH BAR, CATEGORY FILTER & GRID/LIST SWITCHER -->
         <section class="mb-8 space-y-4">
-            <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
                 
                 <!-- Search Input -->
-                <div class="relative w-full md:w-96">
+                <div class="relative w-full lg:w-96">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-magnifying-glass text-sm"></i>
                     </div>
-                    <input type="text" id="searchInput" placeholder="Cari nama aplikasi (contoh: Lembur, Dapur)..." 
+                    <input type="text" id="searchInput" placeholder="Cari aplikasi (Lembur, Dapur, Barang, Lacak)..." 
                         class="w-full pl-11 pr-10 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-yonas-green focus:border-transparent transition-all shadow-sm">
                     <button id="clearSearch" class="hidden absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600">
                         <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
 
-                <!-- Category Filters -->
-                <div class="flex items-center justify-between w-full md:w-auto gap-3">
-                    <div class="flex p-1.5 bg-slate-200/80 rounded-2xl border border-slate-300/60 text-xs font-bold text-slate-600 w-full md:w-auto">
-                        <button onclick="filterCategory('all')" id="tab-all" class="filter-tab flex-1 md:flex-none px-4 py-2 rounded-xl bg-white text-yonas-green shadow-sm transition-all">Semua (6)</button>
-                        <button onclick="filterCategory('active')" id="tab-active" class="filter-tab flex-1 md:flex-none px-4 py-2 rounded-xl hover:text-yonas-green transition-all">Aktif (2)</button>
-                        <button onclick="filterCategory('upcoming')" id="tab-upcoming" class="filter-tab flex-1 md:flex-none px-4 py-2 rounded-xl hover:text-yonas-green transition-all">Segera Hadir (4)</button>
+                <!-- Category Filters & View Mode Switcher -->
+                <div class="flex flex-wrap sm:flex-nowrap items-center justify-between w-full lg:w-auto gap-3">
+                    <div class="flex p-1.5 bg-slate-200/80 rounded-2xl border border-slate-300/60 text-xs font-bold text-slate-600 flex-1 sm:flex-none">
+                        <button onclick="filterCategory('all')" id="tab-all" class="filter-tab flex-1 sm:flex-none px-4 py-2 rounded-xl bg-white text-yonas-green shadow-sm transition-all">Semua (6)</button>
+                        <button onclick="filterCategory('active')" id="tab-active" class="filter-tab flex-1 sm:flex-none px-4 py-2 rounded-xl hover:text-yonas-green transition-all">Aktif (3)</button>
+                        <button onclick="filterCategory('upcoming')" id="tab-upcoming" class="filter-tab flex-1 sm:flex-none px-4 py-2 rounded-xl hover:text-yonas-green transition-all">Segera Hadir (3)</button>
+                    </div>
+
+                    <!-- Grid / List Switcher -->
+                    <div class="flex p-1.5 bg-slate-200/80 rounded-2xl border border-slate-300/60 text-xs font-bold text-slate-600" role="group" aria-label="Pengubah Tampilan">
+                        <button onclick="setViewMode('grid')" id="btn-grid" title="Tampilan Grid" class="px-3.5 py-2 rounded-xl bg-white text-yonas-green shadow-sm transition-all flex items-center gap-1.5">
+                            <i class="fa-solid fa-table-cells-large"></i>
+                            <span class="hidden sm:inline">Grid</span>
+                        </button>
+                        <button onclick="setViewMode('list')" id="btn-list" title="Tampilan List" class="px-3.5 py-2 rounded-xl hover:text-yonas-green transition-all flex items-center gap-1.5">
+                            <i class="fa-solid fa-list-ul"></i>
+                            <span class="hidden sm:inline">List</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -234,30 +342,32 @@
         <section id="appContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <!-- CARD 1: Si Lembur (AKTIF) -->
-            <article data-title="si lembur pengajuan jam lembur karyawan hr sdm" data-status="active" 
+            <article data-title="si lembur pencatatan pengajuan jam lembur karyawan hr sdm" data-status="active" 
                 class="app-card card-tilt glass-panel rounded-3xl p-6 flex flex-col justify-between relative group">
-                <div>
+                <div class="card-body-wrap">
                     <!-- Top Status & 3D Animated Icon Header -->
-                    <div class="flex items-center justify-between mb-5">
-                        <!-- 3D Animated SVG Icon: Si Lembur (Clock & Calendar) -->
+                    <div class="card-top-row flex items-center justify-between mb-5">
+                        <!-- 3D Animated SVG Icon: Si Lembur (Isometric Clock & Rotating Hand) -->
                         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 via-yonas-green to-emerald-900 p-0.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <div class="w-full h-full bg-slate-900/10 rounded-[14px] backdrop-blur-sm flex items-center justify-center relative overflow-hidden">
-                                <svg class="w-10 h-10 animate-float" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- 3D Base Plate -->
-                                    <rect x="8" y="16" width="48" height="40" rx="10" fill="url(#lemburGrad)" />
-                                    <!-- Calendar Header Band -->
-                                    <rect x="8" y="16" width="48" height="12" rx="6" fill="#ffffff" fill-opacity="0.25" />
-                                    <!-- 3D Clock Orb -->
+                                <svg class="w-11 h-11 animate-float" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- 3D Isometric Clock Body -->
+                                    <ellipse cx="32" cy="54" rx="14" ry="3" fill="#032410" class="animate-shadow-float" />
+                                    <rect x="8" y="14" width="44" height="36" rx="10" fill="url(#lemburGrad)" />
+                                    <rect x="8" y="14" width="44" height="11" rx="5" fill="#ffffff" fill-opacity="0.25" />
+                                    <!-- 3D Clock Dial -->
                                     <circle cx="40" cy="40" r="14" fill="#ffffff" />
                                     <circle cx="40" cy="40" r="11" fill="#0a5c2b" />
-                                    <!-- Glowing Clock Hands -->
-                                    <path d="M40 33V40L45 43" stroke="#5effa3" stroke-width="2.5" stroke-linecap="round" />
-                                    <!-- Calendar Rings -->
-                                    <rect x="18" y="10" width="4" height="10" rx="2" fill="#ffffff" />
-                                    <rect x="42" y="10" width="4" height="10" rx="2" fill="#ffffff" />
+                                    <!-- Static Hour Hand & Rotating Minute Hand -->
+                                    <path d="M40 40L45 43" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+                                    <path class="animate-clock-hand" d="M40 40V32" stroke="#5effa3" stroke-width="2.4" stroke-linecap="round" />
+                                    <circle cx="40" cy="40" r="2" fill="#5effa3" />
+                                    <!-- Calendar Top Pins -->
+                                    <rect x="17" y="9" width="4" height="9" rx="2" fill="#ffffff" />
+                                    <rect x="39" y="9" width="4" height="9" rx="2" fill="#ffffff" />
                                     <defs>
-                                        <linearGradient id="lemburGrad" x1="8" y1="16" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#00b047"/>
+                                        <linearGradient id="lemburGrad" x1="8" y1="14" x2="52" y2="50" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#00c853"/>
                                             <stop offset="1" stop-color="#07421e"/>
                                         </linearGradient>
                                     </defs>
@@ -266,28 +376,35 @@
                         </div>
 
                         <!-- Active Badge -->
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-yonas-green border border-emerald-300 shadow-sm">
+                        <span class="status-badge-pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-yonas-green border border-emerald-300 shadow-sm">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 badge-live"></span> AKTIF
                         </span>
                     </div>
 
-                    <!-- App Title & Category -->
-                    <div class="mb-3">
-                        <span class="text-[11px] font-bold tracking-wider text-emerald-700 uppercase">SDM & Operasional</span>
-                        <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-yonas-green transition-colors mt-0.5">
-                            Si Lembur
-                        </h3>
-                    </div>
+                    <div class="card-text-wrap">
+                        <!-- App Title & Category -->
+                        <div class="mb-2.5">
+                            <span class="text-[11px] font-bold tracking-wider text-emerald-700 uppercase">SDM & Operasional</span>
+                            <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-yonas-green transition-colors mt-0.5">
+                                Si Lembur
+                            </h3>
+                        </div>
 
-                    <!-- Description -->
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        Sistem Pengajuan, Persetujuan, dan Rekapitulasi Jam Kerja Lembur Karyawan PT Yonasindo Intra Pratama.
-                    </p>
+                        <!-- Description -->
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Sistem pencatatan, pengajuan, dan rekapitulasi jam lembur karyawan PT Yonasindo Intra Pratama secara digital dan akurat.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Card Action Footer -->
-                <div class="pt-4 border-t border-slate-200/70 flex items-center justify-between">
-                    <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">v0.9 &bull; Update 11/11/2026</span>
+                <div class="card-footer-wrap pt-4 border-t border-slate-200/70 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="list-status-pill hidden items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-yonas-green border border-emerald-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 badge-live"></span> AKTIF
+                        </span>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">v0.9 &bull; Update 11/11/2026</span>
+                    </div>
                     <a href="https://elvarifs.github.io/silemburyonasindo/" target="_blank" rel="noopener noreferrer" 
                         class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-yonas-green to-yonas-emerald hover:from-yonas-dark hover:to-yonas-green text-white text-xs font-bold inline-flex items-center gap-2 transition-all shadow-md hover:shadow-lg transform active:scale-95">
                         <span>Buka Aplikasi</span>
@@ -297,28 +414,28 @@
             </article>
 
             <!-- CARD 2: Si Dapur (AKTIF) -->
-            <article data-title="si dapur makanan konsumsi fasilitas ga operasional" data-status="active" 
+            <article data-title="si dapur konsumsi operasional dapur internal fasilitas ga" data-status="active" 
                 class="app-card card-tilt glass-panel rounded-3xl p-6 flex flex-col justify-between relative group">
-                <div>
+                <div class="card-body-wrap">
                     <!-- Top Status & 3D Animated Icon Header -->
-                    <div class="flex items-center justify-between mb-5">
-                        <!-- 3D Animated SVG Icon: Si Dapur (Chef Hat & Cloche + Steam) -->
+                    <div class="card-top-row flex items-center justify-between mb-5">
+                        <!-- 3D Animated SVG Icon: Si Dapur (Cloche & Chef Hat + Warm Steam) -->
                         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 via-yonas-green to-emerald-900 p-0.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <div class="w-full h-full bg-slate-900/10 rounded-[14px] backdrop-blur-sm flex items-center justify-center relative overflow-hidden">
-                                <svg class="w-10 h-10 animate-float" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Animated Steam Paths -->
-                                    <path class="animate-steam" d="M24 16C24 16 26 12 24 9" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-                                    <path class="animate-steam" style="animation-delay: 0.8s" d="M32 15C32 15 34 11 32 8" stroke="#5effa3" stroke-width="2" stroke-linecap="round"/>
-                                    <path class="animate-steam" style="animation-delay: 0.4s" d="M40 16C40 16 42 12 40 9" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-
-                                    <!-- 3D Cloche / Plate Base -->
-                                    <ellipse cx="32" cy="50" rx="22" ry="5" fill="#043317" />
-                                    <path d="M14 47C14 36 22 28 32 28C42 28 50 36 50 47H14Z" fill="url(#dapurGrad)" />
-                                    <circle cx="32" cy="25" r="3.5" fill="#ffffff" />
-                                    <rect x="12" y="47" width="40" height="4" rx="2" fill="#ffffff" />
+                                <svg class="w-11 h-11 animate-float" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Animated Warm Steam -->
+                                    <path class="animate-steam" d="M23 18C23 18 25 14 23 10" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                                    <path class="animate-steam" style="animation-delay: 0.8s" d="M32 16C32 16 34 12 32 8" stroke="#5effa3" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path class="animate-steam" style="animation-delay: 0.4s" d="M41 18C41 18 43 14 41 10" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                                    <!-- 3D Cloche & Serving Plate -->
+                                    <ellipse cx="32" cy="52" rx="22" ry="4.5" fill="#043317" />
+                                    <path d="M14 48C14 37 22 29 32 29C42 29 50 37 50 48H14Z" fill="url(#dapurGrad)" />
+                                    <path d="M20 44C21 38 25 34 30 33" stroke="#ffffff" stroke-opacity="0.45" stroke-width="2.5" stroke-linecap="round" />
+                                    <circle cx="32" cy="25.5" r="3.5" fill="#ffffff" />
+                                    <rect x="11" y="48" width="42" height="4" rx="2" fill="#ffffff" />
                                     <defs>
-                                        <linearGradient id="dapurGrad" x1="14" y1="28" x2="50" y2="47" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#00c853"/>
+                                        <linearGradient id="dapurGrad" x1="14" y1="29" x2="50" y2="48" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#00e676"/>
                                             <stop offset="1" stop-color="#0a5c2b"/>
                                         </linearGradient>
                                     </defs>
@@ -327,28 +444,35 @@
                         </div>
 
                         <!-- Active Badge -->
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-yonas-green border border-emerald-300 shadow-sm">
+                        <span class="status-badge-pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-yonas-green border border-emerald-300 shadow-sm">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 badge-live"></span> AKTIF
                         </span>
                     </div>
 
-                    <!-- App Title & Category -->
-                    <div class="mb-3">
-                        <span class="text-[11px] font-bold tracking-wider text-emerald-700 uppercase">Fasilitas & General Affair</span>
-                        <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-yonas-green transition-colors mt-0.5">
-                            Si Dapur
-                        </h3>
-                    </div>
+                    <div class="card-text-wrap">
+                        <!-- App Title & Category -->
+                        <div class="mb-2.5">
+                            <span class="text-[11px] font-bold tracking-wider text-emerald-700 uppercase">Fasilitas & General Affair</span>
+                            <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-yonas-green transition-colors mt-0.5">
+                                Si Dapur
+                            </h3>
+                        </div>
 
-                    <!-- Description -->
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        Sistem Manajemen Konsumsi & Operasional Dapur Internal PT Yonasindo Intra Pratama.
-                    </p>
+                        <!-- Description -->
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Sistem Manajemen Konsumsi & Operasional Dapur Internal PT Yonasindo Intra Pratama.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Card Action Footer -->
-                <div class="pt-4 border-t border-slate-200/70 flex items-center justify-between">
-                    <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">v0.1 &bull; Update 10/11/2026</span>
+                <div class="card-footer-wrap pt-4 border-t border-slate-200/70 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="list-status-pill hidden items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-yonas-green border border-emerald-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 badge-live"></span> AKTIF
+                        </span>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">v0.1 &bull; Update 10/11/2026</span>
+                    </div>
                     <a href="https://elvarifs.github.io/sidapuryonasindo/" target="_blank" rel="noopener noreferrer" 
                         class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-yonas-green to-yonas-emerald hover:from-yonas-dark hover:to-yonas-green text-white text-xs font-bold inline-flex items-center gap-2 transition-all shadow-md hover:shadow-lg transform active:scale-95">
                         <span>Buka Aplikasi</span>
@@ -357,87 +481,102 @@
                 </div>
             </article>
 
-            <!-- CARD 3: Si Lacak (SEGERA HADIR) -->
-            <article data-title="si lacak tracking armada pengiriman gps logistik" data-status="upcoming" 
+            <!-- CARD 3: Si Barang (AKTIF) -->
+            <article data-title="si barang stok alat tulis kerja pencatatan pengambilan barang inventaris" data-status="active" 
                 class="app-card card-tilt glass-panel rounded-3xl p-6 flex flex-col justify-between relative group">
-                <div>
+                <div class="card-body-wrap">
                     <!-- Top Status & 3D Animated Icon Header -->
-                    <div class="flex items-center justify-between mb-5">
-                        <!-- 3D Animated SVG Icon: Si Lacak (Radar & 3D Location Pin) -->
-                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 p-0.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div class="card-top-row flex items-center justify-between mb-5">
+                        <!-- 3D Animated SVG Icon: Si Barang (3D Isometric Logistics Box + Security Tape + Floating Shadow) -->
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 via-yonas-green to-emerald-900 p-0.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <div class="w-full h-full bg-slate-900/10 rounded-[14px] backdrop-blur-sm flex items-center justify-center relative overflow-hidden">
-                                <svg class="w-10 h-10 animate-float-delayed" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- 3D Radar Wave Rings -->
-                                    <circle cx="32" cy="36" r="18" stroke="#ffffff" stroke-opacity="0.3" stroke-width="2" />
-                                    <circle cx="32" cy="36" r="11" stroke="#ffffff" stroke-opacity="0.6" stroke-width="2" />
-                                    <!-- 3D Pin -->
-                                    <path d="M32 10C23.7157 10 17 16.7157 17 25C17 35.5 32 54 32 54C32 54 47 35.5 47 25C47 16.7157 40.2843 10 32 10Z" fill="url(#lacakGrad)" />
-                                    <circle cx="32" cy="24" r="6" fill="#ffffff" />
+                                <svg class="w-11 h-11" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Floating Shadow -->
+                                    <ellipse cx="32" cy="56" rx="15" ry="3" fill="#032410" class="animate-shadow-float" />
+                                    <g class="animate-float">
+                                        <!-- 3D Isometric Box Faces -->
+                                        <path d="M32 9L52 19V41L32 51L12 41V19L32 9Z" fill="url(#barangActiveRight)" />
+                                        <path d="M32 9L52 19L32 29L12 19L32 9Z" fill="#7dffb3" />
+                                        <path d="M32 29V51L12 41V19L32 29Z" fill="url(#barangActiveLeft)" />
+                                        <!-- Security Sealing Tape -->
+                                        <path d="M21 14L41 24V32L37 30V26L21 18V14Z" fill="#ffffff" fill-opacity="0.85" />
+                                        <path d="M25 12L45 22L41 24L21 14L25 12Z" fill="#ffffff" />
+                                    </g>
                                     <defs>
-                                        <linearGradient id="lacakGrad" x1="17" y1="10" x2="47" y2="54" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#ffb703"/>
-                                            <stop offset="1" stop-color="#d48800"/>
+                                        <linearGradient id="barangActiveRight" x1="32" y1="19" x2="52" y2="51" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#00b047"/>
+                                            <stop offset="1" stop-color="#053819"/>
+                                        </linearGradient>
+                                        <linearGradient id="barangActiveLeft" x1="12" y1="19" x2="32" y2="51" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#00d45a"/>
+                                            <stop offset="1" stop-color="#0a5c2b"/>
                                         </linearGradient>
                                     </defs>
                                 </svg>
                             </div>
                         </div>
 
-                        <!-- Upcoming Badge -->
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                            <i class="fa-solid fa-clock text-xs"></i> SEGERA HADIR
+                        <!-- Active Badge -->
+                        <span class="status-badge-pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-yonas-green border border-emerald-300 shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 badge-live"></span> AKTIF
                         </span>
                     </div>
 
-                    <!-- App Title & Category -->
-                    <div class="mb-3">
-                        <span class="text-[11px] font-bold tracking-wider text-amber-700 uppercase">Logistik & Transportasi</span>
-                        <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors mt-0.5">
-                            Si Lacak
-                        </h3>
-                    </div>
+                    <div class="card-text-wrap">
+                        <!-- App Title & Category -->
+                        <div class="mb-2.5">
+                            <span class="text-[11px] font-bold tracking-wider text-emerald-700 uppercase">Inventaris & Perlengkapan</span>
+                            <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-yonas-green transition-colors mt-0.5">
+                                Si Barang
+                            </h3>
+                        </div>
 
-                    <!-- Description -->
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        Sistem Monitoring Real-time Pengiriman Barang, Pelacakan Armada/Fleet, & Integrasi Lokasi Lapangan.
-                    </p>
+                        <!-- Description -->
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Manajemen Stok Alat Tulis Kerja, termasuk pencatatan pengambilan barang menjadi lebih teratur.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Card Action Footer -->
-                <div class="pt-4 border-t border-slate-200/70 flex items-center justify-between">
-                    <span class="text-xs text-slate-400 font-medium">Dalam Pengembangan</span>
-                    <button onclick="showUpcomingModal('Si Lacak')" 
-                        class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-500 hover:text-amber-800 text-xs font-bold inline-flex items-center gap-2 transition-all border border-slate-200">
-                        <i class="fa-solid fa-lock text-[10px]"></i>
-                        <span>Belum Dirilis</span>
-                    </button>
+                <div class="card-footer-wrap pt-4 border-t border-slate-200/70 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="list-status-pill hidden items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-yonas-green border border-emerald-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 badge-live"></span> AKTIF
+                        </span>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">v0.1 &bull; Update 12/11/2026</span>
+                    </div>
+                    <a href="https://elvarifs.github.io/sibarangyonasindo/" target="_blank" rel="noopener noreferrer" 
+                        class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-yonas-green to-yonas-emerald hover:from-yonas-dark hover:to-yonas-green text-white text-xs font-bold inline-flex items-center gap-2 transition-all shadow-md hover:shadow-lg transform active:scale-95">
+                        <span>Buka Aplikasi</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
                 </div>
             </article>
 
-            <!-- CARD 4: Si Barang (SEGERA HADIR) -->
-            <article data-title="si barang stok inventaris gudang material peralatan" data-status="upcoming" 
+            <!-- CARD 4: Si Lacak (SEGERA HADIR) -->
+            <article data-title="si lacak monitoring real time manajemen siswa siswi lpk yonasindo" data-status="upcoming" 
                 class="app-card card-tilt glass-panel rounded-3xl p-6 flex flex-col justify-between relative group">
-                <div>
+                <div class="card-body-wrap">
                     <!-- Top Status & 3D Animated Icon Header -->
-                    <div class="flex items-center justify-between mb-5">
-                        <!-- 3D Animated SVG Icon: Si Barang (Isometric Box & Tag) -->
+                    <div class="card-top-row flex items-center justify-between mb-5">
+                        <!-- 3D Animated SVG Icon: Si Lacak (3D Location Pin + Pulsing Radar Waves) -->
                         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 p-0.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <div class="w-full h-full bg-slate-900/10 rounded-[14px] backdrop-blur-sm flex items-center justify-center relative overflow-hidden">
-                                <svg class="w-10 h-10 animate-float" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- 3D Isometric Parcel Box -->
-                                    <path d="M32 10L52 20V42L32 52L12 42V20L32 10Z" fill="url(#barangGrad1)" />
-                                    <path d="M32 10L52 20L32 30L12 20L32 10Z" fill="#ffe17d" />
-                                    <path d="M32 30V52L12 42V20L32 30Z" fill="url(#barangGrad2)" />
-                                    <!-- Sealing Tape -->
-                                    <path d="M26 13L38 19L38 33L26 27Z" fill="#ffffff" fill-opacity="0.4" />
+                                <svg class="w-11 h-11" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Pulsing Radar Rings -->
+                                    <circle class="animate-radar-ring" cx="32" cy="38" r="16" stroke="#ffffff" stroke-width="2.2" />
+                                    <circle cx="32" cy="38" r="12" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.8" />
+                                    <!-- 3D Floating Location Pin -->
+                                    <g class="animate-float">
+                                        <path d="M32 9C23.7157 9 17 15.7157 17 24C17 34.5 32 51 32 51C32 51 47 34.5 47 24C47 15.7157 40.2843 9 32 9Z" fill="url(#lacakGrad)" />
+                                        <circle cx="32" cy="23.5" r="6" fill="#ffffff" />
+                                        <circle cx="32" cy="23.5" r="2.5" fill="#d32f2f" />
+                                    </g>
                                     <defs>
-                                        <linearGradient id="barangGrad1" x1="12" y1="10" x2="52" y2="52" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#ffb703"/>
-                                            <stop offset="1" stop-color="#b57400"/>
-                                        </linearGradient>
-                                        <linearGradient id="barangGrad2" x1="12" y1="20" x2="32" y2="52" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#e09f00"/>
-                                            <stop offset="1" stop-color="#915900"/>
+                                        <linearGradient id="lacakGrad" x1="17" y1="9" x2="47" y2="51" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#ffe066"/>
+                                            <stop offset="1" stop-color="#c47a00"/>
                                         </linearGradient>
                                     </defs>
                                 </svg>
@@ -445,29 +584,36 @@
                         </div>
 
                         <!-- Upcoming Badge -->
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                        <span class="status-badge-pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
                             <i class="fa-solid fa-clock text-xs"></i> SEGERA HADIR
                         </span>
                     </div>
 
-                    <!-- App Title & Category -->
-                    <div class="mb-3">
-                        <span class="text-[11px] font-bold tracking-wider text-amber-700 uppercase">Gudang & Inventaris</span>
-                        <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors mt-0.5">
-                            Si Barang
-                        </h3>
-                    </div>
+                    <div class="card-text-wrap">
+                        <!-- App Title & Category -->
+                        <div class="mb-2.5">
+                            <span class="text-[11px] font-bold tracking-wider text-amber-700 uppercase">Monitoring Siswa & LPK</span>
+                            <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors mt-0.5">
+                                Si Lacak
+                            </h3>
+                        </div>
 
-                    <!-- Description -->
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        Manajemen Stok Material Gudang, Pencatatan Alat Kerja, dan Sistem Logistik Barang Masuk-Keluar.
-                    </p>
+                        <!-- Description -->
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Sistem Monitoring secara Real-Time pada sistem manajemen Siswa dan Siswi LPK Yonasindo, dalam hal apapun menjadi satu.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Card Action Footer -->
-                <div class="pt-4 border-t border-slate-200/70 flex items-center justify-between">
-                    <span class="text-xs text-slate-400 font-medium">Dalam Pengembangan</span>
-                    <button onclick="showUpcomingModal('Si Barang')" 
+                <div class="card-footer-wrap pt-4 border-t border-slate-200/70 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="list-status-pill hidden items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                            <i class="fa-solid fa-clock text-[10px]"></i> SEGERA HADIR
+                        </span>
+                        <span class="text-xs text-slate-400 font-medium">Dalam Pengembangan</span>
+                    </div>
+                    <button onclick="showDevToast('Si Lacak')" 
                         class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-500 hover:text-amber-800 text-xs font-bold inline-flex items-center gap-2 transition-all border border-slate-200">
                         <i class="fa-solid fa-lock text-[10px]"></i>
                         <span>Belum Dirilis</span>
@@ -476,30 +622,30 @@
             </article>
 
             <!-- CARD 5: Si Givino (SEGERA HADIR) -->
-            <article data-title="si givino reward hadiah apresiasi analitik data bi report" data-status="upcoming" 
+            <article data-title="si givino digitalisasi visual data pendidikan politeknik givino nusantara" data-status="upcoming" 
                 class="app-card card-tilt glass-panel rounded-3xl p-6 flex flex-col justify-between relative group">
-                <div>
+                <div class="card-body-wrap">
                     <!-- Top Status & 3D Animated Icon Header -->
-                    <div class="flex items-center justify-between mb-5">
-                        <!-- 3D Animated SVG Icon: Si Givino (3D Gift & Floating Stars) -->
+                    <div class="card-top-row flex items-center justify-between mb-5">
+                        <!-- 3D Animated SVG Icon: Si Givino (3D Education Data Prism + Bar Chart + Glowing Stars) -->
                         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 p-0.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <div class="w-full h-full bg-slate-900/10 rounded-[14px] backdrop-blur-sm flex items-center justify-center relative overflow-hidden">
-                                <svg class="w-10 h-10 animate-float-delayed" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Gift Box Base -->
-                                    <rect x="14" y="28" width="36" height="26" rx="4" fill="url(#givinoGrad)" />
-                                    <!-- Gift Lid -->
-                                    <rect x="10" y="22" width="44" height="8" rx="3" fill="#ffd15c" />
-                                    <!-- Ribbon -->
-                                    <rect x="28" y="22" width="8" height="32" fill="#d32f2f" />
-                                    <!-- Ribbon Bow Top -->
-                                    <circle cx="26" cy="18" r="5" fill="#d32f2f" />
-                                    <circle cx="38" cy="18" r="5" fill="#d32f2f" />
+                                <svg class="w-11 h-11 animate-float-delayed" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- 3D Isometric Data Cube / Prism -->
+                                    <path d="M32 12L51 22V43L32 53L13 43V22L32 12Z" fill="url(#givinoPrism)" />
+                                    <path d="M32 12L51 22L32 32L13 22L32 12Z" fill="#fff0b3" fill-opacity="0.9" />
+                                    <path d="M32 32V53L13 43V22L32 32Z" fill="#d98a00" fill-opacity="0.55" />
+                                    <!-- 3D Rising Bar Chart Inside Prism -->
+                                    <rect x="21" y="34" width="4.5" height="10" rx="1.5" fill="#ffffff" />
+                                    <rect x="29.5" y="28" width="4.5" height="16" rx="1.5" fill="#ffffff" />
+                                    <rect x="38" y="22" width="4.5" height="22" rx="1.5" fill="#d32f2f" />
                                     <!-- Floating Sparkle Stars -->
-                                    <path class="animate-pulse-glow" d="M48 12L49.5 15.5L53 17L49.5 18.5L48 22L46.5 18.5L43 17L46.5 15.5L48 12Z" fill="#ffffff" />
+                                    <path class="animate-pulse-glow" d="M49 9L50.5 12.5L54 14L50.5 15.5L49 19L47.5 15.5L44 14L47.5 12.5L49 9Z" fill="#ffffff" />
+                                    <circle class="animate-pulse-glow" style="animation-delay: 0.7s" cx="15" cy="14" r="2" fill="#ffffff" />
                                     <defs>
-                                        <linearGradient id="givinoGrad" x1="14" y1="28" x2="50" y2="54" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#ffb703"/>
-                                            <stop offset="1" stop-color="#c97f00"/>
+                                        <linearGradient id="givinoPrism" x1="13" y1="12" x2="51" y2="53" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#ffd15c"/>
+                                            <stop offset="1" stop-color="#b87100"/>
                                         </linearGradient>
                                     </defs>
                                 </svg>
@@ -507,29 +653,36 @@
                         </div>
 
                         <!-- Upcoming Badge -->
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                        <span class="status-badge-pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
                             <i class="fa-solid fa-clock text-xs"></i> SEGERA HADIR
                         </span>
                     </div>
 
-                    <!-- App Title & Category -->
-                    <div class="mb-3">
-                        <span class="text-[11px] font-bold tracking-wider text-amber-700 uppercase">Analitik & Executive Data</span>
-                        <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors mt-0.5">
-                            Si Givino
-                        </h3>
-                    </div>
+                    <div class="card-text-wrap">
+                        <!-- App Title & Category -->
+                        <div class="mb-2.5">
+                            <span class="text-[11px] font-bold tracking-wider text-amber-700 uppercase">Data Pendidikan & Politeknik</span>
+                            <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors mt-0.5">
+                                Si Givino
+                            </h3>
+                        </div>
 
-                    <!-- Description -->
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        Platform Digitalisasi Visual Data Business Intelligence, Analisis Kinerja, & Laporan Eksekutif.
-                    </p>
+                        <!-- Description -->
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Platform Digitalisasi Visual Data berbasis Pendidikan untuk menunjang perkembangan Politeknik Givino Nusantara.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Card Action Footer -->
-                <div class="pt-4 border-t border-slate-200/70 flex items-center justify-between">
-                    <span class="text-xs text-slate-400 font-medium">Dalam Pengembangan</span>
-                    <button onclick="showUpcomingModal('Si Givino')" 
+                <div class="card-footer-wrap pt-4 border-t border-slate-200/70 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="list-status-pill hidden items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                            <i class="fa-solid fa-clock text-[10px]"></i> SEGERA HADIR
+                        </span>
+                        <span class="text-xs text-slate-400 font-medium">Dalam Pengembangan</span>
+                    </div>
+                    <button onclick="showDevToast('Si Givino')" 
                         class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-500 hover:text-amber-800 text-xs font-bold inline-flex items-center gap-2 transition-all border border-slate-200">
                         <i class="fa-solid fa-lock text-[10px]"></i>
                         <span>Belum Dirilis</span>
@@ -538,30 +691,34 @@
             </article>
 
             <!-- CARD 6: Si Daftar (SEGERA HADIR) -->
-            <article data-title="si daftar pendaftaran formulir registrasi buku tamu digital" data-status="upcoming" 
+            <article data-title="si daftar pendaftaran seleksi administrasi pendataan calon peserta lpk yonasindo" data-status="upcoming" 
                 class="app-card card-tilt glass-panel rounded-3xl p-6 flex flex-col justify-between relative group">
-                <div>
+                <div class="card-body-wrap">
                     <!-- Top Status & 3D Animated Icon Header -->
-                    <div class="flex items-center justify-between mb-5">
-                        <!-- 3D Animated SVG Icon: Si Daftar (Clipboard Checklist & Pen) -->
+                    <div class="card-top-row flex items-center justify-between mb-5">
+                        <!-- 3D Animated SVG Icon: Si Daftar (3D Clipboard Checklist + Animated Digital Pen) -->
                         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 p-0.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <div class="w-full h-full bg-slate-900/10 rounded-[14px] backdrop-blur-sm flex items-center justify-center relative overflow-hidden">
-                                <svg class="w-10 h-10 animate-float" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-11 h-11 animate-float" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <!-- 3D Clipboard Back -->
-                                    <rect x="14" y="14" width="36" height="42" rx="6" fill="url(#daftarGrad)" />
+                                    <rect x="12" y="14" width="34" height="42" rx="6" fill="url(#daftarGrad)" />
                                     <!-- Paper Sheet -->
-                                    <rect x="18" y="20" width="28" height="32" rx="3" fill="#ffffff" />
-                                    <!-- Lines & Checks -->
-                                    <line x1="26" y1="27" x2="40" y2="27" stroke="#0a5c2b" stroke-width="2" stroke-linecap="round" />
-                                    <line x1="26" y1="34" x2="40" y2="34" stroke="#0a5c2b" stroke-width="2" stroke-linecap="round" />
-                                    <line x1="26" y1="41" x2="36" y2="41" stroke="#0a5c2b" stroke-width="2" stroke-linecap="round" />
-                                    <circle cx="22" cy="27" r="1.5" fill="#d32f2f" />
-                                    <circle cx="22" cy="34" r="1.5" fill="#d32f2f" />
-                                    <circle cx="22" cy="41" r="1.5" fill="#d32f2f" />
-                                    <!-- Top Metal Clip -->
-                                    <rect x="24" y="10" width="16" height="8" rx="3" fill="#ffd15c" />
+                                    <rect x="16" y="20" width="26" height="32" rx="3" fill="#ffffff" />
+                                    <!-- Checklist Items -->
+                                    <line x1="24" y1="27" x2="37" y2="27" stroke="#0a5c2b" stroke-width="2" stroke-linecap="round" />
+                                    <line x1="24" y1="34" x2="37" y2="34" stroke="#0a5c2b" stroke-width="2" stroke-linecap="round" />
+                                    <line x1="24" y1="41" x2="33" y2="41" stroke="#0a5c2b" stroke-width="2" stroke-linecap="round" />
+                                    <circle cx="20" cy="27" r="1.6" fill="#008837" />
+                                    <circle cx="20" cy="34" r="1.6" fill="#008837" />
+                                    <circle cx="20" cy="41" r="1.6" fill="#d32f2f" />
+                                    <!-- Top Clip -->
+                                    <rect x="21" y="10" width="16" height="7" rx="3" fill="#ffe17d" />
+                                    <!-- Animated Digital Pen -->
+                                    <g class="animate-pen">
+                                        <path d="M48 24L53 29L41 41L35 42L36 36L48 24Z" fill="#d32f2f" stroke="#ffffff" stroke-width="1.2" />
+                                    </g>
                                     <defs>
-                                        <linearGradient id="daftarGrad" x1="14" y1="14" x2="50" y2="56" gradientUnits="userSpaceOnUse">
+                                        <linearGradient id="daftarGrad" x1="12" y1="14" x2="46" y2="56" gradientUnits="userSpaceOnUse">
                                             <stop stop-color="#ffb703"/>
                                             <stop offset="1" stop-color="#a86900"/>
                                         </linearGradient>
@@ -571,29 +728,36 @@
                         </div>
 
                         <!-- Upcoming Badge -->
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                        <span class="status-badge-pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
                             <i class="fa-solid fa-clock text-xs"></i> SEGERA HADIR
                         </span>
                     </div>
 
-                    <!-- App Title & Category -->
-                    <div class="mb-3">
-                        <span class="text-[11px] font-bold tracking-wider text-amber-700 uppercase">Layanan & Form Digital</span>
-                        <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors mt-0.5">
-                            Si Daftar
-                        </h3>
-                    </div>
+                    <div class="card-text-wrap">
+                        <!-- App Title & Category -->
+                        <div class="mb-2.5">
+                            <span class="text-[11px] font-bold tracking-wider text-amber-700 uppercase">Pendaftaran & Seleksi LPK</span>
+                            <h3 class="text-xl font-display font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors mt-0.5">
+                                Si Daftar
+                            </h3>
+                        </div>
 
-                    <!-- Description -->
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        Portal Pendaftaran Digital, Registrasi Tamu Perusahaan, & Formulir Pelayanan Staf Internal.
-                    </p>
+                        <!-- Description -->
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Sistem pendaftaran, seleksi administrasi, dan pendataan calon peserta LPK Yonasindo secara terpadu.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Card Action Footer -->
-                <div class="pt-4 border-t border-slate-200/70 flex items-center justify-between">
-                    <span class="text-xs text-slate-400 font-medium">Dalam Pengembangan</span>
-                    <button onclick="showUpcomingModal('Si Daftar')" 
+                <div class="card-footer-wrap pt-4 border-t border-slate-200/70 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="list-status-pill hidden items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                            <i class="fa-solid fa-clock text-[10px]"></i> SEGERA HADIR
+                        </span>
+                        <span class="text-xs text-slate-400 font-medium">Dalam Pengembangan</span>
+                    </div>
+                    <button onclick="showDevToast('Si Daftar')" 
                         class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-500 hover:text-amber-800 text-xs font-bold inline-flex items-center gap-2 transition-all border border-slate-200">
                         <i class="fa-solid fa-lock text-[10px]"></i>
                         <span>Belum Dirilis</span>
@@ -618,44 +782,16 @@
     </main>
 
     <!-- FOOTER (NO YIP LOGO & NO SUB-MENU LINKS) -->
-    <footer class="bg-white/90 backdrop-blur-md border-t border-slate-200/80 mt-16 py-8 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col items-center justify-center text-center space-y-2">
-                
-                <!-- Specific Requested Designer & Copyright Text -->
-                <p class="text-xs sm:text-sm font-semibold text-slate-700 leading-relaxed max-w-2xl">
-                    Aplikasi Si Pusat Yonasindo ini dirancang dan dibuat oleh <span class="text-yonas-green font-bold">Elvari Faisal (Tim IT LPK YONASINDO)</span>
-                </p>
-                
-                <p class="text-[11px] text-slate-400 font-medium">
-                    &copy; <span id="copyright-year">2026</span> PT Yonasindo Intra Pratama. Hak Cipta Dilindungi.
-                </p>
-
-            </div>
+    <footer class="bg-white/90 backdrop-blur-md border-t border-slate-200/80 mt-16 py-7 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-xs sm:text-sm font-semibold text-slate-700 leading-relaxed">
+                Aplikasi Si Pusat Yonasindo ini dirancang dan dibuat oleh <span class="text-yonas-green font-bold">Elvari Faisal (Tim IT LPK YONASINDO)</span>
+            </p>
         </div>
     </footer>
 
-    <!-- MODAL POPUP FOR UNRELEASED APPS -->
-    <div id="upcomingModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-amber-100 transform scale-95 transition-transform duration-300 relative text-center">
-            <button onclick="toggleModal('upcomingModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <div class="w-16 h-16 rounded-2xl bg-amber-50 text-amber-500 border border-amber-200 flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
-                <i class="fa-solid fa-screwdriver-wrench"></i>
-            </div>
-
-            <h3 id="modalAppName" class="text-lg font-display font-bold text-slate-900 mb-1">Aplikasi Belum Dirilis</h3>
-            <p class="text-xs text-slate-500 mb-5 leading-relaxed">
-                Modul ini saat ini sedang dalam tahap pengembangan akhir oleh Tim IT LPK Yonasindo dan akan segera dirilis.
-            </p>
-
-            <button onclick="toggleModal('upcomingModal')" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs transition-all shadow-md">
-                Mengerti
-            </button>
-        </div>
-    </div>
+    <!-- ELEGANT TOAST NOTIFICATION CONTAINER FOR UNRELEASED APPS -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-[calc(100%-2.5rem)] pointer-events-none"></div>
 
     <!-- GENERAL INFORMATION MODAL -->
     <div id="infoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
@@ -680,7 +816,8 @@
                     <div class="font-bold">Aplikasi yang Sudah Aktif:</div>
                     <ul class="list-disc list-inside text-slate-700">
                         <li><strong>Si Lembur:</strong> Rekap & Pengajuan Jam Kerja Lembur</li>
-                        <li><strong>Si Dapur:</strong> Pemesanan Konsumsi & Katering Dapur</li>
+                        <li><strong>Si Dapur:</strong> Manajemen Konsumsi & Operasional Dapur</li>
+                        <li><strong>Si Barang:</strong> Manajemen Stok Alat Tulis Kerja</li>
                     </ul>
                 </div>
                 <p class="text-slate-500">
@@ -733,20 +870,24 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        const copyYear = document.getElementById('copyright-year');
-        if (copyYear) copyYear.innerText = new Date().getFullYear();
-
-        // --- 2. Interactive Background Canvas Waves & Mesh ---
+        // --- 2. Interactive Background Canvas Waves, White & Emerald Particles + Cursor Aura ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
         let particles = [];
-        let mouse = { x: null, y: null, radius: 150 };
+        let mouse = { x: null, y: null, radius: 160 };
 
         window.addEventListener('mousemove', (e) => {
             mouse.x = e.x;
             mouse.y = e.y;
         });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+            }
+        }, { passive: true });
 
         window.addEventListener('mouseleave', () => {
             mouse.x = null;
@@ -764,12 +905,11 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.radius = Math.random() * 2.5 + 1;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.alpha = Math.random() * 0.5 + 0.2;
+                this.radius = Math.random() * 2.8 + 1.2;
+                this.vx = (Math.random() - 0.5) * 0.55;
+                this.vy = (Math.random() - 0.5) * 0.55;
+                this.isWhite = Math.random() > 0.65;
+                this.alpha = this.isWhite ? (Math.random() * 0.55 + 0.35) : (Math.random() * 0.45 + 0.2);
             }
 
             update() {
@@ -779,15 +919,15 @@
                 if (this.x < 0 || this.x > width) this.vx *= -1;
                 if (this.y < 0 || this.y > height) this.vy *= -1;
 
-                // Mouse Aura Interaction
+                // Cursor / Touch Repel Aura
                 if (mouse.x != null && mouse.y != null) {
                     let dx = mouse.x - this.x;
                     let dy = mouse.y - this.y;
                     let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < mouse.radius) {
+                    if (distance < mouse.radius && distance > 0) {
                         let force = (mouse.radius - distance) / mouse.radius;
-                        this.x -= (dx / distance) * force * 3;
-                        this.y -= (dy / distance) * force * 3;
+                        this.x -= (dx / distance) * force * 2.8;
+                        this.y -= (dy / distance) * force * 2.8;
                     }
                 }
             }
@@ -795,38 +935,50 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(10, 92, 43, ${this.alpha})`;
+                ctx.fillStyle = this.isWhite
+                    ? `rgba(255, 255, 255, ${this.alpha})`
+                    : `rgba(0, 136, 55, ${this.alpha})`;
                 ctx.fill();
             }
         }
 
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 55; i++) {
             particles.push(new Particle());
         }
 
         function animateCanvas() {
             ctx.clearRect(0, 0, width, height);
 
-            // Subtle Background Gradient
+            // Clean White-Green Corporate Gradient
             const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-            bgGrad.addColorStop(0, '#f4f8f5');
-            bgGrad.addColorStop(0.5, '#eef6f0');
-            bgGrad.addColorStop(1, '#e5f2e8');
+            bgGrad.addColorStop(0, '#f6faf7');
+            bgGrad.addColorStop(0.5, '#eef7f1');
+            bgGrad.addColorStop(1, '#e4f2e8');
             ctx.fillStyle = bgGrad;
             ctx.fillRect(0, 0, width, height);
 
-            // Connecting Lines
+            // Soft Interactive Aura Glow Following Cursor
+            if (mouse.x != null && mouse.y != null) {
+                const aura = ctx.createRadialGradient(mouse.x, mouse.y, 10, mouse.x, mouse.y, 220);
+                aura.addColorStop(0, 'rgba(0, 136, 55, 0.12)');
+                aura.addColorStop(0.5, 'rgba(10, 92, 43, 0.05)');
+                aura.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = aura;
+                ctx.fillRect(0, 0, width, height);
+            }
+
+            // Thin Mesh Lines
             for (let a = 0; a < particles.length; a++) {
                 for (let b = a + 1; b < particles.length; b++) {
                     let dx = particles[a].x - particles[b].x;
                     let dy = particles[a].y - particles[b].y;
                     let dist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (dist < 130) {
+                    if (dist < 135) {
                         ctx.beginPath();
                         ctx.moveTo(particles[a].x, particles[a].y);
                         ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.strokeStyle = `rgba(0, 136, 55, ${0.12 * (1 - dist / 130)})`;
+                        ctx.strokeStyle = `rgba(0, 136, 55, ${0.12 * (1 - dist / 135)})`;
                         ctx.lineWidth = 1;
                         ctx.stroke();
                     }
@@ -842,7 +994,7 @@
         }
         animateCanvas();
 
-        // --- 3. 3D Tilt Effect on App Cards ---
+        // --- 3. 3D Perspective Tilt Effect on App Cards ---
         document.querySelectorAll('.card-tilt').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
@@ -852,10 +1004,10 @@
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
                 
-                const rotateX = ((y - centerY) / centerY) * -7;
-                const rotateY = ((x - centerX) / centerX) * 7;
+                const rotateX = ((y - centerY) / centerY) * -6;
+                const rotateY = ((x - centerX) / centerX) * 6;
                 
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
             });
 
             card.addEventListener('mouseleave', () => {
@@ -863,10 +1015,11 @@
             });
         });
 
-        // --- 4. Search & Category Filter Logic ---
+        // --- 4. Search, Category Filter & Grid/List View Mode ---
         const searchInput = document.getElementById('searchInput');
         const clearSearchBtn = document.getElementById('clearSearch');
         const appCards = document.querySelectorAll('.app-card');
+        const appContainer = document.getElementById('appContainer');
         const noResults = document.getElementById('noResults');
         let currentCategory = 'all';
 
@@ -907,6 +1060,26 @@
             filterApps();
         }
 
+        function setViewMode(mode) {
+            const btnGrid = document.getElementById('btn-grid');
+            const btnList = document.getElementById('btn-list');
+            if (!appContainer || !btnGrid || !btnList) return;
+
+            if (mode === 'list') {
+                appContainer.classList.add('view-list');
+                btnList.classList.add('bg-white', 'text-yonas-green', 'shadow-sm');
+                btnList.classList.remove('hover:text-yonas-green');
+                btnGrid.classList.remove('bg-white', 'text-yonas-green', 'shadow-sm');
+                btnGrid.classList.add('hover:text-yonas-green');
+            } else {
+                appContainer.classList.remove('view-list');
+                btnGrid.classList.add('bg-white', 'text-yonas-green', 'shadow-sm');
+                btnGrid.classList.remove('hover:text-yonas-green');
+                btnList.classList.remove('bg-white', 'text-yonas-green', 'shadow-sm');
+                btnList.classList.add('hover:text-yonas-green');
+            }
+        }
+
         function filterApps() {
             const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
             let visibleCount = 0;
@@ -939,11 +1112,39 @@
             filterCategory('all');
         }
 
-        // --- 5. Modal Windows Toggle & Unreleased Trigger ---
-        function showUpcomingModal(appName) {
-            const modalTitle = document.getElementById('modalAppName');
-            if (modalTitle) modalTitle.innerText = `${appName}`;
-            toggleModal('upcomingModal');
+        // --- 5. Elegant Toast Notification & Info Modal ---
+        function showDevToast(appName) {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto bg-white/95 backdrop-blur-md border-l-4 border-amber-500 rounded-2xl p-4 shadow-2xl border border-slate-200/80 flex items-start gap-3.5 transform translate-y-4 opacity-0 transition-all duration-300';
+            toast.innerHTML = `
+                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-screwdriver-wrench text-base"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-xs font-display font-extrabold text-slate-900">${appName} &bull; Segera Hadir</div>
+                    <p class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                        Aplikasi <strong>${appName}</strong> masih dalam tahap pengembangan oleh Tim IT LPK Yonasindo.
+                    </p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+            `;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
         }
 
         function toggleModal(modalId) {
